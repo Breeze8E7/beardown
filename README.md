@@ -13,8 +13,10 @@ As I progressed through boot.dev, I found myself wanting a review tool. Taking n
 &nbsp;&nbsp;&nbsp;&nbsp;ii) An ideal version will also allow the user to create their own questions.
 
 3) Provide feedback on those 10 questions.  
-&nbsp;&nbsp;&nbsp;&nbsp;a) It will track if a question has been answered correctly 3 times in a row. If this happens, the question is considered "mastered" and will appear less frequently.  
-&nbsp;&nbsp;&nbsp;&nbsp;b) It will also track mastery on a Course/Chapter level, so the user can see in more broad strokes rather than just specific questions.
+&nbsp;&nbsp;a) It will track if a question has been answered correctly 3 times in a row.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If this happens, the question is considered "mastered" and will appear less frequently.  
+&nbsp;&nbsp;b) It will also track mastery on a Course/Chapter level,  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;so the user can see in more broad strokes rather than just specific questions.
 
-4) Adapt the next quiz based on mastery of topics.  
+5) Adapt the next quiz based on mastery of topics.  
 &nbsp;&nbsp;&nbsp;&nbsp;a) Questions that are considered "mastered" may still appear, but at a much lower frequency.
