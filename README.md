@@ -6,11 +6,11 @@ As I progressed through boot.dev, I found myself wanting a review tool. Taking n
 
 1) Provide a random sample of 10 questions to the user.  
 &nbsp;&nbsp;a) These questions will be pulled from completed tasks on boot.dev and categorized by Course/Chapter.  
-&nbsp;&nbsp;b) The first version will have manually implemented questions by me, the creator.  
-&nbsp;&nbsp;&nbsp;&nbsp;i)An ideal version will tie directly to the user's boot.dev account and pull questions as chapters are completed.  
-&nbsp;&nbsp;c) The first version will only utilize multiple choice questions from boot.dev.  
-&nbsp;&nbsp;&nbsp;&nbsp;i)An ideal version will adapt questions that were not originally multiple choice questions into multiple choice questions.  
-&nbsp;&nbsp;&nbsp;&nbsp;ii) An ideal version will also allow the user to create their own questions.
+&nbsp;&nbsp;b) The base version will have manually implemented questions by me, the creator.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An ideal version will tie directly to the user's boot.dev account and pull questions as chapters are completed.  
+&nbsp;&nbsp;c) The base version will only utilize multiple choice questions from boot.dev.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An ideal version will adapt questions that were not originally multiple choice questions into multiple choice.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An ideal version will also allow the user to create their own questions.
 
 3) Provide feedback on those 10 questions.  
 &nbsp;&nbsp;a) It will track if a question has been answered correctly 3 times in a row.  
