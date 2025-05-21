@@ -1,6 +1,6 @@
 # beardown
 
-A self monitoring progress and review tool for studying.  
+Welcome to "Bear Down for Boots", a lightweight quiz and feedback engine that helps boot.dev users reinforce learning, monitor progress, and master content through adaptive self-assessment.
 
 As I progressed through boot.dev, I found myself wanting a review tool. Taking notes and re-reading them is nice. Referring to the in-app spellbook is handy. Boots, the built-in AI, is also a great tool. But I wanted something that tests me (and only me, not the AI) and gives me feedback on where I need to study more, and where I am comfortable. I have a teaching background and progress monitoring was a very helpful tool, so I thought maybe I could bring something like that to my boot.dev experience. This tool, when completed, will do the following:  
 
