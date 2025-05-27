@@ -7,6 +7,7 @@ CREATE TABLE questions (
     option_a TEXT,
     option_b TEXT,
     option_c TEXT,
-    option_d TEXT
+    option_d TEXT,
+    link TEXT
 );
 

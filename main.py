@@ -52,6 +52,7 @@ def main():
                 option_b = input("Option B: ").strip()
                 option_c = input("Option C (optional): ").strip() or None
                 option_d = input("Option D (optional): ").strip() or None
+                link = input("Link (optional): ").strip() or None
                 try:
                     add_question(course, chapter, question, answer, option_a, option_b, option_c, option_d)
                 except Exception as e:
