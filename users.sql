@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS question_progress (
     question_id INTEGER NOT NULL,
     correct_attempts INTEGER DEFAULT 0,
     total_attempts INTEGER DEFAULT 0,
+    consecutive_correct INTEGER DEFAULT 0,
     mastered BOOLEAN DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (question_id) REFERENCES questions(id),

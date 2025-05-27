@@ -1,33 +1,5 @@
 import sqlite3
-
-def get_db_connection():
-    return sqlite3.connect('questions.db')
-
-def initialize_user_tables():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE NOT NULL,
-        email TEXT UNIQUE,
-        password TEXT
-    )
-    ''')
-    
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS progress (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
-        course TEXT NOT NULL,
-        chapter TEXT NOT NULL,
-        FOREIGN KEY (user_id) REFERENCES users (id)
-    )
-    ''')
-    
-    conn.commit()
-    conn.close()
+from db import get_db_connection
 
 def create_user(username, email=None, password=None):
     conn = get_db_connection()
@@ -43,7 +15,6 @@ def create_user(username, email=None, password=None):
         print(f"Username or email already exists.")
     finally:
         conn.close()
-        print(f"User '{username}' created.")
 
 def login(username, password):
     conn = get_db_connection()
