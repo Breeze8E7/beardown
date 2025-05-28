@@ -1,11 +1,12 @@
 from users import *
 from questions import *
+from env import *
 import sqlite3
 from db import initialize_database, get_db_connection
 
-
 def main():
     initialize_database()
+    import_questions_from_csv(csv_file_path)
     print("Database initialized.")
     logged_in_user_id = None 
 
