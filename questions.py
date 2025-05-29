@@ -30,12 +30,12 @@ def import_questions_from_csv(file_path):
             option_b = row['option_b']
             option_c = row.get('option_c') or None
             option_d = row.get('option_d') or None
-            lesson_link = row.get('lesson_link') or None  # If you're using that new column
+            link = row.get('link') or None
 
             cursor.execute('''
-            INSERT INTO questions (course, chapter, question, answer, option_a, option_b, option_c, option_d, lesson_link)
+            INSERT INTO questions (course, chapter, question, answer, option_a, option_b, option_c, option_d, link)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (course, chapter, question, answer, option_a, option_b, option_c, option_d, lesson_link))
+            ''', (course, chapter, question, answer, option_a, option_b, option_c, option_d, link))
 
     conn.commit()
     conn.close()

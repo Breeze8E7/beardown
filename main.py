@@ -25,10 +25,9 @@ def main():
 
         if choice == '1':
             username = input("Username: ").strip()
-            email = input("Email (optional): ").strip() or None
             password = input("Password (optional): ").strip() or None
             try:
-                create_user(username, email, password)
+                create_user(username, password)
             except Exception as e:
                 print(f"Error creating user: {e}")
 
@@ -55,7 +54,7 @@ def main():
                 option_d = input("Option D (optional): ").strip() or None
                 link = input("Link (optional): ").strip() or None
                 try:
-                    add_question(course, chapter, question, answer, option_a, option_b, option_c, option_d)
+                    add_question(course, chapter, question, answer, option_a, option_b, option_c, option_d, link)
                 except Exception as e:
                     print(f"Error adding question: {e}")
             else:

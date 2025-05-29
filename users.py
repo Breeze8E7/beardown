@@ -1,18 +1,18 @@
 import sqlite3
 from db import get_db_connection
 
-def create_user(username, email=None, password=None):
+def create_user(username, password):
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
         cursor.execute('''
-        INSERT INTO users (username, email, password)
-        VALUES (?, ?, ?)
-        ''', (username, email, password))
+        INSERT INTO users (username, password)
+        VALUES (?, ?)
+        ''', (username, password))
         conn.commit()
         print(f"User '{username}' created.")
     except sqlite3.IntegrityError:
-        print(f"Username or email already exists.")
+        print(f"Username already exists.")
     finally:
         conn.close()
 

@@ -1,8 +1,7 @@
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
-    email TEXT UNIQUE,
-    password TEXT
+    password TEXT NOT NULL
 )
 
 CREATE TABLE progress (
