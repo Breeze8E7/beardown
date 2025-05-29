@@ -1,3 +1,6 @@
 __pycache__/
 .env
 env.py
+*.db
+Question Bank - Trial Version 1.csv
+*.Zone.Identifier
