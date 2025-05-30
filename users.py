@@ -67,3 +67,27 @@ def unlock_course(user_id, course):
     for chapter in chapters:
         unlock_chapter(user_id, course, chapter)
     print(f"Course '{course}' unlocked for user ID {user_id}.")
+
+def display_user_progress(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT 
+            q.course,
+            q.chapter,
+            COUNT(*) AS total_questions,
+            SUM(CASE WHEN uqb.mastered = 1 THEN 1 ELSE 0 END) AS mastered_questions
+        FROM user_question_bank uqb
+        JOIN questions q ON uqb.question_id = q.id
+        WHERE uqb.user_id = ?
+        GROUP BY q.course, q.chapter
+        ORDER BY q.course, q.chapter
+    ''', (user_id,))
+    rows = cursor.fetchall()
+    conn.close()
+    if not rows:
+        print("No questions unlocked yet.")
+        return
+    print("\nYour Progress Overview:")
+    for course, chapter, total, mastered in rows:
+        print(f"Course: {course} | Chapter: {chapter} | Mastered: {mastered}/{total}")

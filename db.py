@@ -12,19 +12,7 @@ def initialize_database():
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
-        email TEXT UNIQUE,
-        password TEXT
-    )
-    ''')
-
-    # Create progress table (chapter access)
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS progress (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
-        course TEXT NOT NULL,
-        chapter TEXT NOT NULL,
-        FOREIGN KEY (user_id) REFERENCES users(id)
+        password TEXT NOT NULL
     )
     ''')
 
@@ -43,10 +31,9 @@ def initialize_database():
         link TEXT
     )
     ''')
-
-    # Create question_progress table (mastery tracking)
+    # Create user_question_bank table with progress tracking embedded
     cursor.execute('''
-    CREATE TABLE IF NOT EXISTS question_progress (
+    CREATE TABLE IF NOT EXISTS user_question_bank (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER NOT NULL,
         question_id INTEGER NOT NULL,
@@ -59,6 +46,10 @@ def initialize_database():
         UNIQUE(user_id, question_id)
     )
     ''')
-
+    # Create indexes for performance
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_user_question ON user_question_bank(user_id, question_id)')
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_uqb_user ON user_question_bank(user_id)')
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_uqb_mastered ON user_question_bank(user_id, mastered)')
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_uqb_question ON user_question_bank(question_id)')
     conn.commit()
     conn.close()

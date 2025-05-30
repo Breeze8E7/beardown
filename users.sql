@@ -18,3 +18,6 @@ CREATE TABLE user_question_bank (
 );
 
 CREATE INDEX idx_user_question ON user_question_bank(user_id, question_id);
+CREATE INDEX IF NOT EXISTS idx_uqb_user ON user_question_bank(user_id);
+CREATE INDEX IF NOT EXISTS idx_uqb_mastered ON user_question_bank(user_id, mastered);
+CREATE INDEX IF NOT EXISTS idx_uqb_question ON user_question_bank(question_id);
