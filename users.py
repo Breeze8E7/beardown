@@ -34,18 +34,21 @@ def login(username, password):
         print("Login failed.")
         return None
 
+import sqlite3
+from db import get_db_connection
+
 def unlock_chapter(user_id, course, chapter):
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('''
-    SELECT id FROM questions WHERE course = ? AND chapter = ?
+        SELECT id FROM questions WHERE course = ? AND chapter = ?
     ''', (course, chapter))
     question_ids = [row[0] for row in cursor.fetchall()]
     for qid in question_ids:
         try:
             cursor.execute('''
-            INSERT INTO question_progress (user_id, question_id)
-            VALUES (?, ?)
+                INSERT INTO user_question_bank (user_id, question_id)
+                VALUES (?, ?)
             ''', (user_id, qid))
         except sqlite3.IntegrityError:
             continue
@@ -57,10 +60,10 @@ def unlock_course(user_id, course):
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('''
-    SELECT DISTINCT chapter FROM questions WHERE course = ?
+        SELECT DISTINCT chapter FROM questions WHERE course = ?
     ''', (course,))
     chapters = [row[0] for row in cursor.fetchall()]
+    conn.close()
     for chapter in chapters:
         unlock_chapter(user_id, course, chapter)
-    conn.close()
     print(f"Course '{course}' unlocked for user ID {user_id}.")
