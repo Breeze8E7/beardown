@@ -40,3 +40,53 @@ def import_questions_from_csv(file_path):
     conn.commit()
     conn.close()
     print("CSV questions imported successfully.")
+
+from db import get_db_connection
+
+def handle_correct_answer(user_id, question_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Update progress for a correct answer
+    cursor.execute('''
+        UPDATE user_question_bank
+        SET
+            total_attempts = total_attempts + 1,
+            correct_attempts = correct_attempts + 1,
+            consecutive_correct = consecutive_correct + 1
+        WHERE user_id = ? AND question_id = ?
+    ''', (user_id, question_id))
+
+    # Check if consecutive_correct now qualifies for mastery
+    cursor.execute('''
+        SELECT consecutive_correct FROM user_question_bank
+        WHERE user_id = ? AND question_id = ?
+    ''', (user_id, question_id))
+    consecutive_correct = cursor.fetchone()[0]
+
+    if consecutive_correct >= 3:
+        cursor.execute('''
+            UPDATE user_question_bank
+            SET mastered = TRUE
+            WHERE user_id = ? AND question_id = ?
+        ''', (user_id, question_id))
+
+    conn.commit()
+    conn.close()
+
+def handle_incorrect_answer(user_id, question_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Update progress for an incorrect answer
+    cursor.execute('''
+        UPDATE user_question_bank
+        SET
+            total_attempts = total_attempts + 1,
+            consecutive_correct = 0,
+            mastered = FALSE
+        WHERE user_id = ? AND question_id = ?
+    ''', (user_id, question_id))
+
+    conn.commit()
+    conn.close()

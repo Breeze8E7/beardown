@@ -1,4 +1,5 @@
 import sqlite3
+import random
 from db import get_db_connection
 
 def create_user(username, password):
@@ -91,3 +92,45 @@ def display_user_progress(user_id):
     print("\nYour Progress Overview:")
     for course, chapter, total, mastered in rows:
         print(f"Course: {course} | Chapter: {chapter} | Mastered: {mastered}/{total}")
+
+import random
+from db import get_db_connection
+
+def generate_quiz(user_id, num_questions=10):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Step 1: Get unmastered questions
+    cursor.execute('''
+        SELECT q.id, q.course, q.chapter, q.question, q.option_a, q.option_b, q.option_c, q.option_d, q.answer
+        FROM questions q
+        JOIN user_question_bank uqb ON q.id = uqb.question_id
+        WHERE uqb.user_id = ? AND uqb.mastered = FALSE
+    ''', (user_id,))
+    unmastered = cursor.fetchall()
+
+    # Step 2: If not enough, get mastered ones too
+    if len(unmastered) < num_questions:
+        cursor.execute('''
+            SELECT q.id, q.course, q.chapter, q.question, q.option_a, q.option_b, q.option_c, q.option_d, q.answer
+            FROM questions q
+            JOIN user_question_bank uqb ON q.id = uqb.question_id
+            WHERE uqb.user_id = ? AND uqb.mastered = TRUE
+        ''', (user_id,))
+        mastered = cursor.fetchall()
+
+        if mastered:
+            print("Insufficient unmastered questions; filling in with previously mastered questions.")
+
+        total_pool = unmastered + mastered
+    else:
+        total_pool = unmastered
+
+    if not total_pool:
+        print("No questions available in your bank.")
+        conn.close()
+        return []
+
+    selected = random.sample(total_pool, min(num_questions, len(total_pool)))
+    conn.close()
+    return selected
