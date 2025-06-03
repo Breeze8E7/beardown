@@ -1,4 +1,5 @@
 import sqlite3
+import textwrap
 
 def get_db_connection():
     conn = sqlite3.connect('masterdatabase.db')
@@ -72,3 +73,7 @@ def get_chapters_for_course(course):
     rows = cursor.fetchall()
     conn.close()
     return [row[0] for row in rows]
+
+def format_option(label, text):
+    wrapped = textwrap.fill(text, width=80, subsequent_indent='   ')
+    return f"{label})\n   {wrapped}"

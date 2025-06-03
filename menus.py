@@ -72,10 +72,15 @@ def take_a_quiz_menu(user_id):
     incorrect_links = []
     for idx, q in enumerate(questions, 1):
         print(f"\nQuestion {idx}: {q['question']}")
-        print(f"A. {q['option_a']}")
-        print(f"B. {q['option_b']}")
-        print(f"C. {q['option_c']}")
-        print(f"D. {q['option_d']}")
+        print(format_option("A", q['option_a']))
+        print()
+        print(format_option("B", q['option_b']))
+        print()
+        print(format_option("C", q['option_c']))
+        print()
+        print(format_option("D", q['option_d']))
+        print()
+
         if q['link']:
             print(f"🔗 Link: {q['link']}")
         while True:
