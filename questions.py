@@ -70,7 +70,9 @@ def handle_correct_answer(user_id, question_id):
             SET mastered = TRUE
             WHERE user_id = ? AND question_id = ?
         ''', (user_id, question_id))
-
+    print("✅ Correct! Progress updated.")
+    if consecutive_correct >= 3:
+        print("🎉 You've mastered this question!")
     conn.commit()
     conn.close()
 
@@ -87,6 +89,7 @@ def handle_incorrect_answer(user_id, question_id):
             mastered = FALSE
         WHERE user_id = ? AND question_id = ?
     ''', (user_id, question_id))
+    print("❌ Incorrect. Progress updated.")
 
     conn.commit()
     conn.close()
