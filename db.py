@@ -1,7 +1,10 @@
 import sqlite3
 
 def get_db_connection():
-    return sqlite3.connect('masterdatabase.db')
+    conn = sqlite3.connect('masterdatabase.db')
+    conn.row_factory = sqlite3.Row  # ← Add this line
+    return conn
+
 
 def initialize_database():
     conn = get_db_connection()
@@ -53,3 +56,19 @@ def initialize_database():
     cursor.execute('CREATE INDEX IF NOT EXISTS idx_uqb_question ON user_question_bank(question_id)')
     conn.commit()
     conn.close()
+
+def get_all_courses():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT DISTINCT course FROM questions')
+    rows = cursor.fetchall()
+    conn.close()
+    return [row[0] for row in rows]
+
+def get_chapters_for_course(course):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT DISTINCT chapter FROM questions WHERE course = ?', (course,))
+    rows = cursor.fetchall()
+    conn.close()
+    return [row[0] for row in rows]

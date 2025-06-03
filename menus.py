@@ -1,6 +1,6 @@
 from users import *
 from questions import *
-from db import initialize_database, get_db_connection
+from db import *
 
 def login_menu():
     while True: 
@@ -38,28 +38,25 @@ def user_main_menu(logged_in_user_id):
         print("The results of your last quiz are:")
         print("What would you like to do?")
         print("1. Take a Quiz.")
-        print("2. Add chapter to quiz bank.")
-        print("3. Add course to quiz bank.")
-        print("4. View quiz bank.")
-        print("5. Logout")
-        print("6. Exit")
+        print("2. Add to quiz bank.")
+        print("3. View quiz bank.")
+        print("4. Logout")
+        print("5. Exit")
         choice = input("Enter your choice: ").strip()
         if choice == '1':
             # Take a quiz
             take_a_quiz_menu(logged_in_user_id)
         elif choice == '2':
-            # Add chapter to quiz bank
+            # Add to quiz bank
+            add_to_quiz_bank_menu(logged_in_user_id)
             pass
         elif choice == '3':
-            # Add course to quiz bank
-            pass
-        elif choice == '4':
             # View quiz bank
             pass
-        elif choice == '5':
+        elif choice == '4':
             print("Logging out...")
             return
-        elif choice == '6':
+        elif choice == '5':
             print("Exiting the application. Goodbye!")
             return
         else:
@@ -112,3 +109,38 @@ def take_a_quiz_menu(user_id):
             exit()
         else:
             print("Invalid choice. Please enter 1 or 2.")
+
+def add_to_quiz_bank_menu(user_id):
+    courses = get_all_courses()
+    if not courses:
+        print("⚠️ No courses available.")
+        return
+
+    print("📚 Available Courses:")
+    for i, course in enumerate(courses, 1):
+        print(f"{i}. {course}")
+
+    choice = input("Select a course by number: ").strip()
+    if not choice.isdigit() or not (1 <= int(choice) <= len(courses)):
+        print("❌ Invalid selection.")
+        return
+
+    selected_course = courses[int(choice) - 1]
+    chapters = get_chapters_for_course(selected_course)
+    if not chapters:
+        print(f"⚠️ No chapters found for '{selected_course}'.")
+        return
+
+    print(f"\n📖 Chapters in '{selected_course}':")
+    print("0. Add all chapters")
+    for i, chapter in enumerate(chapters, 1):
+        print(f"{i}. {chapter}")
+
+    chapter_choice = input("Select a chapter (or 0 to add all): ").strip()
+    if chapter_choice == '0':
+        unlock_course(user_id, selected_course)
+    elif chapter_choice.isdigit() and 1 <= int(chapter_choice) <= len(chapters):
+        selected_chapter = chapters[int(chapter_choice) - 1]
+        unlock_chapter(user_id, selected_course, selected_chapter)
+    else:
+        print("❌ Invalid selection.")

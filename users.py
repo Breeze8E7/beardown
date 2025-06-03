@@ -35,9 +35,6 @@ def login(username, password):
         print("Login failed.")
         return None
 
-import sqlite3
-from db import get_db_connection
-
 def unlock_chapter(user_id, course, chapter):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -93,16 +90,15 @@ def display_user_progress(user_id):
     for course, chapter, total, mastered in rows:
         print(f"Course: {course} | Chapter: {chapter} | Mastered: {mastered}/{total}")
 
-import random
-from db import get_db_connection
-
 def generate_quiz(user_id, num_questions=10):
     conn = get_db_connection()
+    conn.row_factory = sqlite3.Row  # Ensure you get dictionaries not tuples
     cursor = conn.cursor()
 
     # Step 1: Get unmastered questions
     cursor.execute('''
-        SELECT q.id, q.course, q.chapter, q.question, q.option_a, q.option_b, q.option_c, q.option_d, q.answer
+        SELECT q.id, q.course, q.chapter, q.question, q.answer,
+               q.option_a, q.option_b, q.option_c, q.option_d, q.link
         FROM questions q
         JOIN user_question_bank uqb ON q.id = uqb.question_id
         WHERE uqb.user_id = ? AND uqb.mastered = FALSE
@@ -112,7 +108,8 @@ def generate_quiz(user_id, num_questions=10):
     # Step 2: If not enough, get mastered ones too
     if len(unmastered) < num_questions:
         cursor.execute('''
-            SELECT q.id, q.course, q.chapter, q.question, q.option_a, q.option_b, q.option_c, q.option_d, q.answer
+            SELECT q.id, q.course, q.chapter, q.question, q.answer,
+                   q.option_a, q.option_b, q.option_c, q.option_d, q.link
             FROM questions q
             JOIN user_question_bank uqb ON q.id = uqb.question_id
             WHERE uqb.user_id = ? AND uqb.mastered = TRUE
