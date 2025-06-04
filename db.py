@@ -75,5 +75,14 @@ def get_chapters_for_course(course):
     return [row[0] for row in rows]
 
 def format_option(label, text):
-    wrapped = textwrap.fill(text, width=80, subsequent_indent='   ')
-    return f"{label})\n   {wrapped}"
+    if not text:
+        text = "[No answer provided]"
+    elif '\n' in text:
+        # Multi-line text: preserve lines, indent each manually
+        lines = text.strip().splitlines()
+        formatted = '\n   '.join(lines)
+        return f"{label})\n   {formatted}"
+    else:
+        # Single-line: wrap nicely
+        wrapped = textwrap.fill(text, width=80, subsequent_indent='   ')
+        return f"{label})\n   {wrapped}"
